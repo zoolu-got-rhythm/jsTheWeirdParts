@@ -78,3 +78,28 @@ var checkPastLimitSimplified = function(limiter){
 
 var arr5 = mapForEach(arr1, checkPastLimitSimplified(1));
 console.log(arr5);
+
+
+
+
+
+
+
+
+
+
+
+
+// underscore js library
+
+var arr6 = _.map(arr1, function(item){
+  return item * 3
+});
+
+
+var arr7 = _.filter([1, 2, 3, 4, 5, 6], function(item){
+  return item % 2 === 0
+});
+
+console.log(arr6);
+console.log(arr7);
