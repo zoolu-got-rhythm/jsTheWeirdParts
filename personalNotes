@@ -1,0 +1,1373 @@
+
+Understanding JavaScript: the wierd parts, notes:
+-------------------------------------------------
+
+UNDERSTAND: DON'T IMMITATE.
+
+take notes from here and add to reference above, after learning sessions.
+Don't immitate: understand.
+understand how frameworks were actually coded using vanilla JavaScript
+and how to create our own library's. understand the weird and most
+powerful parts of JavaScript.
+
+
+ - syntax parsers: compilers or intrepreters that are programs coded by other people
+   to read and translate your js code character by character.
+ - lexical enviornment: WHERE the code is written and nested: the grammer of that language:
+   to give you an idea where the parts will sit inside the computers memory.
+ - exicution context: a wrapper to help manage the block of code that is running/or the
+   current lexical environment(scope), aswell as sometimes other
+   stuff that the inrepreter program does.
+
+name/value pairs and objects:
+
+name = "chris"; //name value pair
+a name is only allowed one value per contextual exicution(the area/block of code that is being run),
+however: that value may be a collection of name/value pairs(an object).
+
+an object is a collection of name value pairs: the simplest definition when talking about JavaScript,
+Don't think about objects any more deeply than nested collections of name/valuej pair: it's just that simple.
+
+var object = {
+  name: "chris",
+  age: 24,
+  magazines: {
+        mag1: "playboy",
+        mag2: "psx"
+        nintendo:{
+             mag1: "issue1",
+             mag2: "issue2
+                 }
+
+             }
+
+}
+
+the global environment: and the global object:
+----------------------------------------------
+
+the exicution context first creates a global wrapper and creates a
+global object called window and a special variable called the "this" keyword,
+aswell to a reference to an outer environment: if there is one.
+
+GLOBAL: means not inside a function
+
+when variables and functions are created in global scope, they become part of
+the window object.
+
+var a = "hello world".
+a;
+window.a //is the same
+this.a
+
+There's no outer exicution context than the global level(scope), However:
+In functions there's an outer environment.
+
+it's important to note that the javascript engine is creating these things you didn't create.
+
+exicution context: creation and "hoisting":
+-------------------------------------------
+
+when the exicution context is created for the window, there are 2 phases:
+the creation phase and the exicution phase.
+
+In the creation phase the javascript interpreter places your functions and
+variables into the computers MEMORY SPACE before the code has actually been ran.
+
+In the exicution phase the code is then ran from top to bottom.
+meaning we can actually call functions before they've been declared,
+this is known as "hoisting", we should avoid this.
+
+JavaScript and undefined
+------------------------
+
+In the inital creation phase of the exicution context, The intrepreter will assign a
+value of it's own to any un-assigned variables, called undefined.
+undefined is a special JavaScript value, that unsigned variables get.
+
+there's a difference between: uncaught: is not defined and undefined,
+one means the variable exists and the compiler set it's own value to it.
+
+the undefined value set by javascript interpreters is very useful when debugging.
+
+also we can manualy set a value to undefined, but it's bad practise to confuse what's us and the compiler.
+
+execution context: second phase: code exicution:
+-------------------------------------------------
+
+this is the phase where the compiler runs through your code from top to bottom through you script.
+
+so in the creation phase of the global execution context a global object(window), this and allocated memory
+space is setup into the computer, then the compiler will scan code
+from top to bottom to be exicuted.
+
+single threaded, synchronous exicutuion:
+1 command at a time, or line by line if you have your
+code indented. in the order that it appears.
+
+function invocation and the exicution stack:
+--------------------------------------------
+
+when you invoke a function the js engine creates a new
+execution context with it's very own creation and exicution phase(this is known as the execution stack)
+with their very own this variables and global objects, the variables within it are set-up during
+the creation phase and the functions are then executed line by line,
+so which ever function is currently running is put on top of the stack, starting with the global execution context.
+
+when the functions are done executing they get "popped" off the stack
+untill the compiler ends back up at the global context.
+
+make mental note of what the current execution context is when
+invoking your functions as a visual model for what's going on when
+invoking functions.
+
+functions, context and variable environments:
+---------------------------------------------
+
+this just means where the variable lives, and how they relate to each
+other in the memory.
+
+Each execution context has it's own variable environment and creation phase memory allocation.
+
+so a var with the same name DECLARED(var in front of it)
+inside a certain context will have it's unique value.
+
+scope chain
+-----------
+
+every execution context has a reference to it's outer lexical environment/outer references(variables).
+
+it's important to know where your functions sit and on what level they are in the
+lexical enviornment in the script so you can know where there outer environments are.
+
+if the variables isn't found in one execution context the js engine will keep moving outwards
+down through the execution stack/scope chain as many nested functions as it must untill it find's a reference to the var.
+
+so make a mental note of where you are physicaly in the lexical environment, and how long your
+execution stack is getting, and when they'll be stored in to memory during creation phases.
+
+scope
+-----
+
+where a variable is available in your code.
+
+interesting tidbit: if you call the same function twice, they'll have individual
+places in the memory. so while they look the same,
+it's actually two different var's in memory.
+
+his philosophy on learning code:
+Understand over immitate examples.
+
+ES6: or es2015: let
+-------------------
+var c = true;
+
+let c = true;
+
+it replaces var's so you can use "block scope".
+
+so you can get scope with statements like you do with function scope.
+
+so the let value is only available within that statement block.
+
+which means when unlike a var it's not stored into memory untill
+the statement it's self is exicuted?
+
+what about asyncrhonous callbacks?
+----------------------------------
+
+We've been discussing the syncrhonous nature of JavaScript so far,
+where code is executed line at a time.
+
+means: more than one at a time.
+
+  event queue:
+  ------------
+  the browser has a stack of events, abit like the execution stack , which get's looked
+  at when the execution stack gets popped back down to emtpy.
+
+  we can create eventListner's that JavaScript will execute when that event is heard.
+
+  the js code that is running is still actually running just syncrhonously.
+
+  so any events that happen outside of the JavaScript engine get placed in the event queue,
+  and when javaScript is finished with the execution stack it'll process the event que.
+
+  asynchronous part is about what's happening outside of the js engine.
+
+  so js itself is actually just syncrhonous.
+
+  http request and the Rendering engine are outside of The JavaScript engine.
+
+types and javascript
+--------------------
+
+dynamic typing: during the execution phase the js intrepreter gives our var's types for us.
+this means there's no keyword telling the var whata type the value is.
+there's no errors, if figures out the type on the fly as the code gets executed.
+
+other languages have "static typing": meaning you must actually define the type.
+
+primitive types
+---------------
+there are 6 primitive types in js.
+a primitive type: is something that represents a single type, so not a object.
+-undefined (var exists without a set value)
+-null (use null to set them equal to nothing)
+-boolean (true or false)
+-number (24); note: there's 1 number type in js: it's floating point, meaning there's always decimals.
+you can fake number to be an integor but it's actually always a floating point in JS.
+which can make math in js alittle weird.
+-string ("a sequence of characters");
+-symbol (used in es6, )
+
+operators
+---------
+
+a special function that is syntactically (written) differently to normal js functions.
+
+so it it's kinda like +(number1, number2);
+but looks like this 4+5; this is called infix notation.
+so operators are actually functions, but the syntax is disguised to make it
+human freindly.
+inside those operator functions there is pre-written code by somebody to
+make those numbers add/subtract or whatever.
+
+the equal to = operator has a function aswell btw.
+
+operator precedence and associativity
+--------------------------------------
+which operator function gets called first, then down the line from there.
+associativity: which order operator functions get called in: left-to-right
+or right-to-left from the operators associative value.
+
+precedence is the value of that operator. highest wins.
+
+Precedence can actually make a big difference in the value we get.
+depending on the order it's operators are called.
+
+precedence helps us determine which operator functions run first. v important.
+associativity comes into play when there's more than 1 operator in a condition,
+deciding which operator runs first and from which direction, left or right.
+
+grouping
+--------
+(..)
+a special operator to dictate the associativity of your conditional.
+this operator has the highest precedence.
+
+coercion:
+---------
+
+Converting a value from one type to another.
+This happens quite often in JavaScript because it's dynamically
+typed. the JavaScript engine will change the types of
+values to get things to run.
+
+coercion is part of the process of operator functions running code inside
+the intepreter and making a decisions.
+
+e.g: var a = 1 + "2";
+         console.log(a);
+
+comparison operators:
+---------------------
+
+built in Number() function, pass arguments into the parameters and see
+what types they get converted into.
+
+equality can be used to check for coercion.
+e.g false == 0; //< true        null == 0; //< false
+
+strict equality stops coercion, when comparing values:
+e.g false === 0; //< false
+
+same applies for inequality, use strict inequality !== (not equal too)
+
+there's object.is for checking sameness in es6 coming aswell.
+
+existence and booleans:
+----------------------
+
+there's a Boolean built in function to see how values convert to booleans.
+
+Boolean(undefined);
+//< false
+
+any value will equate to a true or false boolean value
+
+empty strings, 0, null convert to false etc.
+
+default values
+--------------
+
+remember how all operators are really functions with different infix syntax
+and that the value we compare are really parameters to be passed to the operator function,
+and then it will return values.
+
+the or operator function || returns the first value that is true:
+
+0 || 1
+//> 1
+
+undefined || "hello"
+//> "hello" //because it coerces to true
+
+the first true value gets return'd of the last false value if both are false.
+
+use the built in Boolean() function to check if a value coerces to truthy or falsey.
+
+
+framework aside: Default values, namespacing, colliding:
+--------------------------------------------------------
+
+when we link external files they all stack into 1 long script, in order with
+1 global execution context. the code is not seperated in any way, it's just
+executes as 1 long script in order.
+
+we can check the globalname space to see if our other scripts/librarys
+have the same names, to stop those values from being overwridden.
+
+e.g: the code below will return and assign the first true value,
+the assocativity of the or operand goes from left to right i believe.
+
+var this.libraryName = this.libraryName || "library 2";
+
+objects and functions:
+----------------------
+
+objects and the dot:
+  objects are collections of name value pairs, and those values can contain
+  more objects.
+  objects can have properties(data types or other objects): remember we said
+  an object can have another name/value pair in it(more nested objects).
+  objects can contain functions, when it's connected to a object it's known
+  as a methods.
+
+  so objects have properties and methods, and these sit in memory.
+  the objects have references /adresses to where these
+  properties(primitive data types and objects)/methods
+  which are connected to it sit in the memory.
+
+  so let's look at how we access those slots in memory
+  with javascript(those properties/functions of an object).
+
+  computed member access: objectname["properyString"]
+  member access:          objectname.property
+
+  the members being the parts of the objects,
+  abit like the toes and fingers of my body as an metaphor.
+
+  always use the dot member for cleaner code and easier debugging,
+  unless you need the computed member access to get the properties
+  in a dynamic way with a string that changes throughout the program or
+  through a loop
+
+
+objects and object literals:
+----------------------------
+
+Literals are faster,
+the syntax you use in the end doesn't matter though because the
+javascript interprets the same thing: and assigns the objects and it's properties
+into memory.. and that's it !
+
+literal syntax can be quite powerful because it can make for some clean looking
+and easy to write code.
+
+Remember: the code you write isn't what's really happening under the hood
+in the js engine. It's being translated(compiled/parsed) into something
+the computer understands.
+
+Faking namespaces:
+------------------
+
+Namespace:
+A container for variables and functions , typically to keep var's and functions
+with the same name seperate.
+
+we do this to avoid collisions and over-riding in our programs with our own var's
+or framework var's that my be attached to the global window object.
+
+so instead we can file things away into the memory which hold these values
+or functions, which we can then call later on by simple address names, too
+access them.
+
+json and object literals:
+-------------------------
+json uses object literal syntax because it takes up the smallest bandwidth
+when sending data from client sidde to a server,
+oppose to the old xml double tags.
+
+JavaScript does come with some built in functionality to transfer between
+parsing json and js.
+
+json is very similar to js syntax but they are not the same.
+
+json requires quotes on the object properties: and js accepts this,
+which means in turn the syntax is cross compatible.
+
+ however json does not accept objects without qoutes on the properties.
+ so js has some built in methods to transfer objects/data.
+
+ JSON.stringify(objectName);
+ JSON.parse(objectName);
+
+
+functions and objects:
+----------------------
+
+in JavaScript functions are objects. so view functions as an object
+being placed into memory.
+
+first class functions: everything you can do with other types you can
+do with functions, you can assign them to variales, pass them around,
+ create them on the fly(inside arguments(parameters) of other functions etc).
+
+functions are objects.
+so what does a function object look like? like any other, it resides in memory.
+
+we can attach primitives(name/value pair), objects, functions.
+
+function objects have special hidden properties:
+2 important ones:
+  name: "myFunctionName". (functions can be anonymous, meaning it
+  doesn't have to have a name)
+  code: think about the code we write in function as being just one of the
+  propeties of that function object,
+  "invocable" () this is where & when all the execution context stuff happens,
+  creation phase: assigning the code variables into memory.
+  execution phase: running through the code synchronously.
+
+  It is imperative that you have this mental model of a function in your mind
+  as we go through the rest of this course.
+
+function statements and function expressions/first class functions:
+-------------------------------------------------------------------
+
+expression:
+a unit of code that results/returns a value,
+It doesn't have to save to a variable.
+
+statement:
+is hoisted into memory and is executed only when called or ran.
+
+Because in javaScript functions are objects we have both function
+expressions and function statements.
+
+function greet(){
+console.log("hello");
+}
+
+
+var anonymousGreet = function(){
+console.log("hiya");
+};
+
+
+
+functional programming:
+passing functions to other functions as you can do with var's through
+parameters and creating objects and function objects on the fly as
+arguments etc, because in..
+JavaScript functions are objects and can be treated as the object data type.
+this is known as first class functions.
+
+
+by value vs by reference: (primitive an object type memory allocation)
+----------------------------------------------------------------------
+by value:
+
+var a = 3;
+var b = a; //or pass a to function: e.g:  b(a);
+
+here we are copying the value of a and slotting the same value but into 2 different
+slots in memory.
+
+by reference:
+
+2 names point to the same address in memory with all objects.
+
+var a = {};
+b = a; //or pass a to function: e.g:  b(a);
+
+all objects interact by reference.
+
+mutate: to change something
+immutable: can't be changed.
+
+In JavaScript:
+
+all primitive data types are by value.
+
+all object types are by reference.
+
+objects, functions, and "this":
+-------------------------------
+
+functions are objects, with properties such as name, code.
+
+invoke(); the curly braces invoke the code property of the function object.
+
+so the function object sits in memory with it's own properties and methods.
+but when the code property is invoked a new execution context
+is created and put on the execution stack.
+
+each execution context has it's own variable environment, where the
+variables inside that function live.
+
+it has a reference to it's outer environment, it's outer lexical environment.
+ which tells it how to look down the scope chain.
+
+ so if you search for a variable in your lexical environment and it can't be found
+ it'll keep searching outward to the next environment all the way to the
+ global environment untill it finds that variable or function.
+
+ everytime a execution context is created it creates and gives us
+  a variable called "this".
+
+  It's popular for JavaScripters to update their objects property's from methods
+  within those objects using the this variable, this is a pattern you'll see
+  commonly used by js coders.
+
+  the let keyword , which will be an alternative to the var keyword
+  will try and solve the "this" referencing problem/"bug".
+
+  so to summarize:
+  we learnt this, targets the global object from within a function in
+  global scope.
+
+  we learnt this target's it's object holder when used from within a method
+  of an object.
+
+  and when we use "this" from a function within a method of an object
+  it target's global scope again, throwing that property onto the window object,
+  due to a "Bug". so we create a reference to that objects this,
+  using something like this: var self = this;
+
+Arrays: collections of anything:
+--------------------------------
+
+because js is dynamically typed, array's can contain anything, any data type.
+an array stores a collection of data into memory.
+
+"arguments" and spread:
+-----------------------
+
+when we call a function a new execution context is set-up, and it sets up some
+things for us:
+
+a variable environment/lexical environment,
+reference to outer enviornment,
+"this" keyword,
+"arguments" keyword
+
+arguments contain a list of all the parameters that you pass to the function.
+
+js actually gives you an "arguments" keyword which contains those parameter values
+
+overtime "arguments" keyword will becomes what's called deprecated, which means
+it'll still be around but not the best way to do something anymore with that language.
+
+there'll be something new:
+
+the new thing will be called a "spread" parameter.
+
+which looks like this:
+
+function args(x, y, z, ...other){
+
+//all other arguments will be put/spread into an array with the ... name.
+
+}
+
+args(1, 2, 3, 4, 5, 6, "blah", {name: "chris"}, function(){});
+
+function overloading:
+---------------------
+
+in other languages like c#, c++ and java functions can have the same names,
+however JavaScript doesn't have this. but what we do have is first class functions,
+meaning we can pass function paramters/arguments to other functions and so on,
+nesting default parameters inside other functions, it's quite a simple pattern
+really.
+
+conceptual aside: syntax parsers: part 2:
+-----------------------------------------
+
+it's important to know that the js engine syntax parser was written
+by somebody and it's a program/code that reads and translates your code(into binary?).
+
+it reads and exicutes the code line by line, character by character,
+making assumptions and stating certain rules, and can even make changes
+to your code(type coercion etc) before it's executed.
+
+if it see's an r it expects a return statement for e.g, but will pass a
+syntax error if return isn't spelt correctly.
+
+the parser try's to figure out what your trying to do.
+
+so the js engine is a program/syntax parser, it has rules(it's lexical structure)
+that it reads specific js syntax and translates and stores into memory
+what the computer can read(binary?), it can even make adjustments to your code
+during the creation phase before the code is executed to help it run.(coercion)
+
+Dangerous aside: automatic semicolon insertion:
+-----------------------------------------------
+
+the js engine add's automatic semocolon insertion if it doesn't see one
+after a statement or thought, it see's a (carriage return)a enter and decides
+to change our code and put one in so it can go to the next line and
+continue executing.
+
+whitespace:
+-----------
+
+js's syntax parser is very liberal when it comes to whitespace.
+
+it's good to put in comments in so when we return to the program we
+can re-figure out what's going on.
+
+as much as you can comment up your code, make it readable and understandable
+for others and yourself.
+
+immediately invoked functions expressions(IIFEs):
+-------------------------------------------------
+
+Does what it sais on the can,
+an expression returns a result,
+we are simply creating and executing a function on the fly as an expression.
+
+var greet = function(name){
+return "hello " + name;
+}(); //we create and execute during the execution phase.
+
+greet === "hello chris" //< true: var now stores the expression.
+
+
+remember an expression is simply something that returns a value.
+
+framework aside: IIFEs and safe code:
+-------------------------------------
+
+iife's are commonly used in library's and frameworks.
+
+it's a commonly used pattern to stop collisions with other linked
+script's, library's and frameworks.
+
+so we just simple create our own execution context and declare the
+var's we may need in there to avoid collision with global var's from other
+scripts. or we can override global var's by appending to the window object
+from refering up a level from within the function execution context.
+
+this pattern helps us create safe intentional code.
+
+remember when we link different scripts, they just run as one, stacked
+on top of each other.
+
+understanding closures:
+-----------------------
+
+Everything we've cover'd up until this point: like execution contexts,
+the execution stack, first class functions etc.. is about to pay off and
+will come in handy when learning and understanding closures.
+
+closure's are a feature of the js engine, the js engine creates the closures
+we just take advantage of it.
+
+so in the execution stack , each execution contexts's variable environement
+is stored into memory and always has a reference to it's outer environment,
+even if that outer environment has been popped off the stack.
+
+because functions are objects(first class)we can just return them as if we
+would a string for example.
+
+the phenomanon of the outer environment still having it's lexical environment
+in memory even when it's not on the execution stack is called a "closure".
+because it kinda closes in the outer environment to the current function(execution ctx)
+running.
+
+so think of closures as the current execution closing in it's outer environment
+variables when that outer execution context isn't on the stack, yet it's var's
+are still in memory for access if we reference them through the outer environment.
+
+the js engine will always make sure it has access to the variables in an outer
+environment, so the scope is intact.
+
+so closures are really important and powerful, they lead to some very
+benficial/highly used patterns, and must be understood.
+
+understanding closures: part 2:
+-------------------------------
+
+
+when a closure is called it'll point to what that parent's envionment's var's
+are currently pointing to in the present of being called in it's memory location/space.
+
+variables available in outer environments and global scope are called
+"free variables".
+
+when you get closures and iife's your UNDERSTANDING A FUNDAMENTAL key aspect
+of advanced JavaScript programming.
+
+
+framework aside: function factories:
+------------------------------------
+
+a factory is a function that makes/returns other things for us.
+
+very important to know that even know we invoke the same function with a
+different argument, it creates a NEW execution context with a DIFFERENT spot/space
+in memory.
+
+everytime you call a function you get a new execution context,
+meaning any functions return'd created inside of it will point(outer reference)
+to that unique execution context's variable environment !
+
+closures and callbacks:
+-----------------------
+
+closures, callbacks, function expressions theses are already things
+we're likely to have some exposure too believe it or not !
+
+we actually use closures, first class functions
+and callbacks all the time.
+
+a callback:
+a function you give to another function, to be run when the other function
+is finished, so the function you call(i.e invoke), "calls back" by calling
+the function you gave it when it finishes.
+
+
+first class functions: means we can create and pass functions as
+data types on the fly, and return them. so we treat functions like
+any other data type(because functions are objects)
+
+e.g:
+function myFunc(callback){
+callback();
+}
+
+
+
+myFunc(function(){
+    return function(){
+       console.log("function expression");
+     }
+});
+
+
+
+call(), apply() and bind():
+---------------------------
+
+remember a function is just a special object that holds properties,
+methods etc.
+
+so all functions have access to a call(), apply() and bind() method
+which has to do with the "this" variable refers too and the arguments you pass
+  to the function aswell.
+
+  bind():
+  so .bind(objectName) creates a copy of whatever function your calling it on,
+  so the this var in that function then points to that object BY REFERENCE.
+
+  call():
+  so .call(obectName) executes the function straight away without copying it like
+  bind does. you can insert parameter values after the 1st argument which has
+  to be an object.
+
+  apply():
+  same as call() but uses an array as parameter values instead.
+
+
+
+
+   function borrowing:
+     borrowing a method from an object and but changing the "this"
+     to refer to a different object.
+
+
+   function currying:
+    creating a copy of a function but with some preset default parameters,
+    (very useful in mathematical situation).
+
+    so if your building a library for mathematical calculations, can have
+    some fundamental ground functions which you can then build on(copy) with some
+    other default parameters, using the bind method.
+
+
+
+
+
+functional programming:
+-----------------------
+
+js really has more in common with functional programming langauges. like lisp,
+scheme etc which have first class functions(functions that behave as objects),
+functions that can be passed as arguments, or return'd from within other functions
+so basicaly treated like any other data type.
+
+functional programming is where we think and code in terms of functions,
+this introduces an entirely different way of thinking and implementing when
+programming.
+
+as programmers we always want to minimize how much typing and work we have
+to do and how often we're repeating our selfs, so we try to reach the most
+proficient solution to a problem, so we tend to put work(code) into functions
+to limit repetition in exchange for re-usability.
+
+but in langauges without first class functions there is limitations to
+how granular and segmented your code could be.
+
+It might feel like the concept of functional programming in js
+(having all these functions lying around) is stretching your
+brain at first, but you'll get used to it, and it'll bring greater cleanliness
+and perhaps order to your programs to reduce the chaos and begin to feel
+more natural to split things up and pass them around to each other making
+your programs also feel more granular and finer detailed.
+
+using and understanding functional programming in JavaScript is what will
+propell you as a js programmer, and is what is making JavaScript grow beyond
+the langauges without first class functions such as c, php and java.
+
+instead of just seperating programs into functions start to think about how i
+can feed my functions other passed functions to return and do work for me.
+this is a very powerful concept, to greater simplify the code i'm writing over
+and over again.
+
+side note:
+when breaking things down in functional programming it's good practise not to
+mutate(change values) data high up in that chain to reduce complicaiton, but instead
+it's better practise to return something new from the initial core data
+that's passed to avoid confusion.
+
+so first class functions and functional programming concepts in js is what's
+taking js to the next level, and is what will take you as a js programmer to
+the next level.
+
+functional programming part 2, and OPEN SOURCE EDJUCATION:
+----------------------------------------------------------
+
+underscore js is a famous library in js that helps you work with arrays
+and collection of objects.
+
+you can read the great source code of these library's for free.
+the challenge of open source is understanding the concepts
+being used. then we can read and write better js ourselfs once we understand.
+
+Open source edjucation: being able to learn good javascript by being able to read and
+understand good javaScript.
+
+check out the annotated source code for underscore.js and see what i can
+learn and understand, take your time. also look at lodash.js's source.
+underscore's code, it's extradorinaly clean and a popular library.
+
+the power of open source edjucation: there is a massive wealth of
+library's on the internet with well documented source code, you can
+read this excellent code and learn things for free.
+the challange of course is that you need to understand some of those
+advanced concepts that we've talked about. This apply's to sites like codepen
+aswell, take the time to read and understand their code, concepts and
+patterns.
+
+that's what i hope this course is helping you to do: to get a better
+OPEN SOURCE EDJUCATION, to be able to read and understand good js so
+i can learn from it and write my own better js.
+
+then think about how i can use functional programming to create maps(functions)
+other's can use and that we ourselfs can re-use more easily to write less code.
+so implement these idea's and concepts to a point where other's could actually
+use and read our code. I could write my own potencial library's
+in the future with this in mind.
+
+ ok so that wraps up first class objects, first class functions and
+ functional programming.
+
+
+Section 5 - Object-Oriented JavaScript and prototypal inheritance:
+------------------------------------------------------------------
+once again like we found with first class functions(which allows for functional
+programming) we're about to encounter some more un-usual concepts that are
+unique to JavaScript, but offer great advancement and prehaps a better way
+of doing things than what is most in use right now with other programming
+languages. We're gunna' focus on the creation of objects because that's where
+alot of the confusion lies.
+
+classical vs prototypal inheritance:
+------------------------------------
+
+Inheritance:
+one object gets access to the properties and methods of another object.
+
+classical inheritance:
+what's currently known, the classic way that's been the standard in other
+languages till now. It can get verbose(more complicated than it needs to be
+to express something).
+
+prototypal inheritance:
+much simpler, flexible, extensible, easier to understand.
+when we talk about inheritance in js it's slightly different to what we
+may be talking about with other languages, and we need to understand it
+and when we do we'll see just how powerful it is with sharing properties and
+methods across multiple objects.
+
+understanding the prototype:
+----------------------------
+so objects have properties that are stored in a location in memory, which we
+can then access when we want via the dot operator for e.g myObj.name;
+
+what's "the prototype"?
+
+we know that objects in js have added "secret" properties and methods added
+by the js engine.
+
+all objects in js(and that includes function objects) have a prototype property.
+the proto property is simply a reference to another object. that's the objects
+prototype.
+
+
+prototype chain, not to be confused with the scope chain, but similar.
+
+scope chain is about looking where we have access to a variable,
+however this has to do with where we have access to a property or method
+amongst a sequence of objects that are connected via the prototype property: proto {}
+
+it's kinda' hidden from us, the js engine does the work of searching the prototype chain
+for those properties and methods.
+
+don't overthink the prototype chain, it's actually very simple. basically all objects
+have a reference to another objects through the proto property. but we don't have to
+manually go obj.proto because the js engine does that for us, just search for the
+ property or method of an obj and the js engine will look for it down the
+ prototypal chain.
+
+the js engine starts at the top of the prototype chain and work's it's way
+down untill it finds what it's looking for, and will take that property/method
+from that spot in memory where it's found.
+
+note: the methods execution context will refer to the object it was called
+against. and then the "this" keyword will refer to the prototype of that object
+if it doesn't find a match.
+
+
+
+In JavaScript Everything is an object (or a primitive):
+-------------------------------------------------------
+
+objects, functions and arrays all have a prototype property referring to the core
+built in javascript object called the "base object" which lies
+at the very bottom of the prototypal chain, this is where the built in methods
+like call, apply and bind etc are. so when you refer
+to them they go down the chain untill they find that match in memory somewhere.
+
+functions and arrays have their own prototype which refers to their own special objects
+before the core object which contain methods like .push, .length etc.
+
+so every function object for example when created has it's __proto__ property
+set to this built-in empty function object which contains the method property's
+all functions have access too.
+
+everything that's built into javaScript can be view'd in the console.
+Play around and see what's already in memory locations waiting to be accessed !
+
+reflection and extend: and for in loops
+---------------------------------------
+
+Remember we want to not be afraid of an OPEN SOURCE EDUCATION, to not be
+afraid to read others source code and that of library's, we have the basic
+tools now to start reading and taking the time to understand what's going on
+in others code, so we can implement those concepts into our own code.
+
+by taking my time to look through the source code of underscore js i've learnt
+something, and can re-use or write my own version of that abstracted method. or
+call it into my own projects, (_.extend).
+
+composing:
+combine multiple object properties into one object through passing
+them as arguments into a method/function that abstracts and does the
+work for us.
+
+reflection:
+an object can look at itself, listing and changing it's
+properties and methods. we can use (for in loop) and object bracket
+notation(which looks for strings instead of converting like dot
+notation does).
+
+extend:
+a function we can write to "extend" the properties of an object, by
+adding properties from other objects and combining(composing) them into one.
+can be used as an alternative pattern to prototypal inheritance.
+
+Note: in the next version of js there's going to be something built in
+called extenz, this is going to be used to set the prototype.
+
+building objects:
+-----------------
+we've already seen object literals and setting the prototype with .__proto__
+but now we're going to look at another way of setting the prototype.
+
+function constructors, "new", and the history of JavaScript:
+------------------------------------------------------------
+js was written(in c?) by Brendan Eich, so he created it's rules and syntax
+in the beginning:
+
+JavaScript is nothing like Java but was named that way for marketing
+purposes by netscape to lure in the school of java developer's into
+their fishing nets.
+
+so as a result the "new" keyword was included to resemble the class
+feature in Java to appease to that crowd, even though js has no classes
+and has few similarites to java.
+
+a function constructor is basically just a function which invokes,
+but when called in an expression with a new keyword in front of it,
+the function refer's to that var's empty object in memory, and
+assigns property's and methods to it therefore "constructing" an
+object.
+
+the function actually returns an object when invoked with "new" in front of it.
+unleses you interrupt it and add your own return in it to do something else.
+
+function constructors and "prototype":
+--------------------------------------
+all function(special objects) have the "prototype" property which holds an
+ empty object, but it does something when the function is called as
+ a constructor with "new". it's a pre-made/built in .__proto__
+
+so "prototype" is the __proto__ of function constructors.
+we can add and mutate it's properties and methods, which all of
+our object constructors will then get access to via the prototypal chain.
+
+instead of putting our methods on the objects themselves which would take
+up alot more memory space. or space in their memory locations,
+so it makes sense to add methods and properties onto the prototype instead
+for efficiency and speed.
+
+so this is one of the valid ways to create objects and set their
+prototype(pre-made in the case of constructors) in js.
+
+Dangerous Aside: "new" and functions:
+-------------------------------------
+so first off: remember the new keyword assigns an empty object to the
+var and the functions returns that with it's passed arguments(the js
+engine does the return).
+
+it's good practise to name your constructor functions with a capital
+at the start. so we don't forget to type in the "new" operator
+before we call the function.
+
+object contructor's were only created to appease to programmers coming
+from other languages. they are soon to be depreicated, making room
+for newer way to create objects. but it's important to know how they work,
+because as a developer you'll sometimes be working on "legacy projects"
+which use older code conventions.
+
+conceptual aside: built-in function constructors:
+-------------------------------------------------
+
+you can enhance the JavaScript language to suit our needs by
+adding our own methods to different function constructors prototypes,
+including built-in function constructors by adding own methods to
+the function constructors prototype property(prototype in a pre-exisiting
+object).
+
+the js engine wraps up some primitive values like "strings" into a
+constructor object.
+
+
+Dangerous aside: built-in function constructors:
+------------------------------------------------
+
+so when using primitives use literals instead of function
+constructors.. this avoids confusing things when using
+comparison operators.
+
+if you use built-in function constructors, no that when using
+conditional statements the values might be seen as objects !
+
+dangerous aside: arrays and for in:
+-----------------------------------
+
+arrays are actually objects. with name/value pairs.
+the property name being the index. that's why we use bracket notation
+to grab array values.
+
+so if we use for in to check the arrays properties after adding
+our own method to the Array prototype, it will go down the prototypal
+chain and print that property method.
+
+so it's safe to use a standard for loop with arrays, which stops at the
+length of the array.
+
+
+object.create and pure prototypal inheritence:
+----------------------------------------------
+
+polyfill:
+code that adds a feature which the an older browser engine may lack.
+
+so if object.create(if the create property doesn't exist on base object)
+or doesn't exist in an older browser, when called
+it'll return undefined. we can check for that with an if statement
+and add our own polyfill, where we can set our own prototype.
+
+think about the power and simplicity of being able to mutate the
+prototype/"constructor" object on the fly. too add new methods and properties
+which then apply too all objects derived from it with
+pure prototypal inheritence.
+
+es6 and classes: class and extends:
+-----------------------------------
+
+let's look at classes. js doesn't have classes, but in the next version it will
+but in a different way. the class{} keyword is an object in es6.
+
+we can then use the extends keyword to add a prototype.
+note: this is just another way to do the same thing, different syntax
+to acheive the same result.
+
+this is appeasing to developers coming from other class based langauges
+like java, c++, c#.
+anthony alecia personaly thinks it's a mistake to not use
+pure prototypal inheritence and is still weary in using the new keyword.
+
+syntactic sugar:
+a different way to type something that doesn't change how it works
+under the hood. it's still the same old thing inside the js engine.
+
+initialization:
+---------------
+
+a literal way of storing lots of data inside an array,
+which then contains objects etc. you can then access that data quite easily.
+so a place to group up your lists of data which can be accessed later on.
+
+this is a clean way to initialize data and it's also really useful for
+prototyping, testing your interface.
+
+so say you can use your block of initialization as prototype data, so
+you can start writing the code that access's it, so it's ready for when
+you want to grab data with json from a server.
+
+if you miss a semi-colon in your object, then you might get an "unexpected"
+error, that just means, your missing some basic syntax, and the what the syntax
+parser saw as it runs from character to character was unexpected.
+
+typeof, instanceof, and figuring out what something is:
+-------------------------------------------------------
+
+these 2 keywords are operators meaning they're functions that take parameter values
+and return a value(in this case they return strings to say what something is).
+
+so the typeof operator function takes an argument, checks it too see what
+data type it is, then returns a string data type representing the value type.
+
+the instanceof operator function takes an argument to check if it's from a certain
+instance or if the value shares the same prototype chain.(wait, but all prototypal
+chains end at the base object)
+
+"use strict"
+------------
+
+strict mode vary's depending on the browser vendor and the
+JavaScript engine it uses.
+
+it imposes stricter rules for "cleaner" and more strict syntax.
+so you have to define variables using the var keyword for e.g.
+Must be declared at the very top of the script or function where the js
+engine can read it.
+
+learning from others good code:
+-------------------------------
+
+we've been learning advanced concepts to help you get an OPEN SOURCE EDUCATION,
+meaning when you read others code you'll be able to eventually understand and
+learn from it, picking up on any patterns and structures etc.
+
+Don't be intimidated or scared to take the time to read and understand
+others source code, take the time to read src and learn from it.
+
+use github and explore:
+front end frameworks
+developers source code
+etc.
+
+reading others source is a great way to learn advanced patterns
+and structures, which we can then deploy in our code.
+
+deep dive into source code: Jquery:
+-----------------------------------
+
+jquery is a JavaScript library that has shorthand for accessing the dom
+and manipulating it, and cross browser compatibility built in.
+
+ the dom is seperate from the js engine, and is like a tree structure
+ that represents the elements in the document, and in which way they
+ should be render'd and "painted" on the screen.
+
+ So when the html document loads, a tree like representation(the dom)
+ of it will be sitting in memory. we can then manipulate that with js.
+
+ with jquery we get shorthand syntax for dom elements.
+
+it's dom methods all seem to ly on the jquery object,
+
+All of it's methods which do work are on the prototype to save memory space,
+like we learnt.
+
+A big part of an open source education is taking the basic concepts we
+learn and borrow and putting them together to create neat tricks,
+or more advanced concepts.
+
+method chaining:
+calling and chaining multiple methods at the end of the same object,
+which can alter, mutate the same object or parent that object refers too.
+
+
+
+
+
+DON'T BE AFRAID OF GOOD CODE. TAKE YOUR TIME, READ IT AND UNDERSTAND IT IN PARTS,
+We can learn a ton from doing this!
+
+Jquery takeaways:
+tucking the new keyword away inside function's which return objects via the
+function constructor for cleaner, shorter code.
+
+referencing the prototype with var's for shorter code
+
+iife's: and passing the global object to them
+sitting library's inside of other library's via iife's.
+pointing to the same memory space, referencing.
+map
+each.
+reflection
+extend:
+add more methods to the jquery object
+double referencing.
+.split(" ") figuring out what something is.
+returning function constructors from a function, and
+setting up the prototype. so we can put mthods on it.
+shorthand syntax for easy function, method calling.
+
+turnary operator: if boolean is true ? return this : if false return this
+
+
+
+method chaining: via returning the this keyword which refer's to that methods object.
+explanation: calling one method after another,
+and each method affects the parent object.
+
+e.g: so obj.method1().method2() where both methods end up with a
+"this" variable pointing at "obj".
+
+
+with alittle bit of thought, we can understand how even the deepest
+source code and programs work and always eventualy figure something out
+by taking our time, don't get too caught up with every single detail,
+focus on things like the rough pattern and structures,
+and how they combine simplar concepts to create their own tricks.
+
+this is an open source education: we're taking the fundamental ideas & concepts,
+then figuring out neat ways to play around with them.
+
+Let's build a framework / library: requirements:
+------------------------------------------------
+
+Greetr library requirements:
+
+- when given a first name, last name, and optional language, it
+generates formal and informal greetings.
+
+- support english and spanish languages.
+
+- reusable library/framework.
+
+- easy to type "g$()" structure.
+
+- supports jquery
+
+structuring safe code:
+----------------------
+
+with iffe's because it executes and finishes, it becomes a closure
+in which we have access to it's passed parameters and lecical envrioment still,
+they're still there lurking around in memory.
+
+
+Our object and it's prototype:
+------------------------------
+
+calling the methods on the object and the js engine
+goes down the prototype chain untill it finds a match,
+right down to the base object.
+
+adding jQuery support:
+----------------------
+
+call the jquery function pass a selector as a string then
+add the chainable methods to manipulate the DOM.
+instead of calling the new keyword eachtime etc, jquery
+abstracts this inside a simple function call.
+
+good commenting:
+----------------
+In js you can do the same thing in various ways, it's quite turse:
+and the syntax can be miss-leading, so comment on your intent.
+
+Always comment up your code, this is vital for when our future self's
+and others need to go back and refactor and update.
+It's common for all programmer's to go through this process of re-figuring
+out their code, so it's good practise to document and explain what you aim to do.
+
+Also as coders we go back and check the logic and flow of our code.
+
+let's use our framework:
+-------------------------
+
+We have a nice clean, safe, reusable library or framework which mimics
+jquery with it's structure and approach with chainable methods, which can be
+mixed with other library's like jquery in harmony.
+
+comment and usage of the library's objects and methods aswell.
+
+this is how you improve as a developer:
+by understanding how things really work, and by looking at others good source code,
+writing in js can be an extemely enjoyable experience because of the nature
+of the programming language. enjoy the process of it,
+don't be afraid of learning something new and trying it.
+Enjoy all of it's parts, even the wierd ones.
+
+typeScript, ES6 and transpiled languages:
+-----------------------------------------
+
+typeScript is a transpiled langauge from microsoft(get's transpiled into
+JavaScript)
+
+traceur is a transpiled langauge that uses ecma6 syntax and compiles(transpiles)
+that into today's JavaScript standards code.
+Good if you want too get ready for the future and start using ecma2015's
+class, consturctor syntax (syntactic sugar) for e.g.
+
+Important to note: transpiled langauges can be great if you understand the
+JavaScript code that they're being transpiled into. However if you use
+one without understanding the JavaScript code that's being generated things
+can get alittle confusing.
+
+existing and upcoming features:
+--------------------------------
+
+check out the github page by lukehoban on current and upcoming
+JavaScript features.
+
+Learning to love the weird parts:
+----------------------------------
+
+JavaScript is a multi-paradigm expressive language, with multiple styles
+and structures. I hope that you learn to love the "weird" parts of js
+because there are styles and approaches in js which aren't in other
+programming languages(first class functions etc).
+
+I hope you continue your JavaScript education and enjoy programming
+in this interesting language, happy coding.
